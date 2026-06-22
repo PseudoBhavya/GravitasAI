@@ -57,7 +57,8 @@ const PORT = process.env.PORT || 5000;
 
     app.listen(PORT, () => logger.info(`🚀 Gravitas AI running → http://localhost:${PORT}`));
   } catch (err) {
-    logger.error(`Failed to start: ${err.message}`);
-    process.exit(1);
-  }
+  console.error('STARTUP ERROR:', err);
+  logger.error(`Failed to start: ${err.stack || err.message || err}`);
+  process.exit(1);
+}
 })();
