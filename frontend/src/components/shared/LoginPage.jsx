@@ -15,19 +15,17 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState('');
 
+  const API_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://gravitasai-production.up.railway.app' 
+    : 'http://localhost:5000';
+
   const handleLogin = async () => {
     setLoading(true);
     setErr('');
     try {
-      const { data } = await authAPI.getGoogleUrl();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setErr('Failed to get Google login URL. Check backend is running.');
-        setLoading(false);
-      }
+      window.location.href = `${API_URL}/api/auth/google`;
     } catch (e) {
-      setErr(e.response?.data?.error || 'Backend not reachable. Is it running on port 5000?');
+      setErr(e.message || 'OAuth redirect failed');
       setLoading(false);
     }
   };
@@ -122,8 +120,8 @@ export function LoginPage() {
 
         <div style={{ marginTop: 40, paddingTop: 20, borderTop: '1px solid var(--muted)' }}>
           <div style={{ fontFamily: 'var(--ff-mono)', fontSize: 9.5, color: 'var(--n500)', textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 2 }}>
-            <div>Backend → http://localhost:5000/health</div>
-            <div>Debug config → http://localhost:5000/api/auth/debug</div>
+            <div>Backend → {API_URL}/health</div>
+            <div>Debug config → {API_URL}/api/auth/debug</div>
           </div>
         </div>
       </div>

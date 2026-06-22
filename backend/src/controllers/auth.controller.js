@@ -42,7 +42,7 @@ function makeOAuthClient() {
 }
 
 // ── GET /api/auth/google ──────────────────────────────────────────────────────
-// Returns the Google OAuth URL for the frontend to redirect to
+// Redirects the frontend to the Google OAuth URL
 exports.getAuthUrl = (req, res) => {
   try {
     const client = makeOAuthClient();
@@ -53,7 +53,7 @@ exports.getAuthUrl = (req, res) => {
       include_granted_scopes: true,
     });
     logger.info(`Auth URL generated (client_id: ${process.env.GOOGLE_CLIENT_ID?.slice(0,20)}…)`);
-    res.json({ url });
+    res.redirect(url);
   } catch (err) {
     logger.error(`getAuthUrl error: ${err.message}`);
     res.status(500).json({ error: err.message });

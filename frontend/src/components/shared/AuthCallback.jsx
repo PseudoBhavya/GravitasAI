@@ -34,6 +34,10 @@ export function AuthError() {
   const [params] = useSearchParams();
   const msg = params.get('msg') || 'Something went wrong during authentication.';
 
+  const API_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://gravitasai-production.up.railway.app' 
+    : 'http://localhost:5000';
+
   return (
     <div className="loader-page">
       <div style={{maxWidth:520, border:'2px solid var(--red)', padding:32, background:'var(--paper)'}}>
@@ -50,9 +54,9 @@ export function AuthError() {
         <div style={{fontFamily:'var(--ff-mono)',fontSize:10.5,color:'var(--n600)',background:'var(--n100)',padding:'12px 14px',marginBottom:20,lineHeight:2}}>
           <strong>Common fixes:</strong><br/>
           1. Check GOOGLE_CLIENT_ID in backend/.env<br/>
-          2. Add http://localhost:5000/api/auth/google/callback to Google Console redirect URIs<br/>
+          2. Add {API_URL}/api/auth/google/callback to Google Console redirect URIs<br/>
           3. Enable Gmail API + Google Calendar API in GCP<br/>
-          4. Visit <code>http://localhost:5000/api/auth/debug</code> to verify config
+          4. Visit <code>{API_URL}/api/auth/debug</code> to verify config
         </div>
 
         <a href="/login" className="btn btn-primary" style={{display:'inline-flex'}}>
